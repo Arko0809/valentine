@@ -1,0 +1,89 @@
+.scene-container {
+    width: 50%;
+    height: 500px;
+    position: relative;
+    padding: 20px;
+    border-radius: 15px;
+    background: transparent;
+}
+
+.scene-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 15px;
+    border: 4px solid #ff69b4;
+    background: linear-gradient(90deg,
+            transparent 50%,
+            rgba(255, 182, 193, 0.1) 60%,
+            transparent 70%);
+    animation: borderGlow 3s infinite linear;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.twinkling-lights {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: 0;
+}
+
+.light {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+/* Generate multiple lights with different positions and animations */
+@for $i from 1 through 20 {
+    .light:nth-child(#{$i}) {
+        left: #{random(100)}%;
+        top: #{if(random(2) == 1, -5px, calc(100% - 5px))};
+        animation: twinkle-#{$i} #{random(3) + 1}s infinite #{random(3)}s;
+    }
+}
+
+@keyframes borderGlow {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+@keyframes twinkle {
+
+    0%,
+    100% {
+        opacity: 0.2;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+canvas {
+    touch-action: none;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .scene-container {
+        width: 100%;
+
+    }
+}
